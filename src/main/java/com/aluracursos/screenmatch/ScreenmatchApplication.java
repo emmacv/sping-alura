@@ -1,8 +1,19 @@
 package com.aluracursos.screenmatch;
 
+import com.aluracursos.screenmatch.model.DatosEpisodio;
+import com.aluracursos.screenmatch.model.DatosSerie;
+import com.aluracursos.screenmatch.model.DatosTemporada;
+import com.aluracursos.screenmatch.principal.EjemploStreams;
+import com.aluracursos.screenmatch.principal.Principal;
+import com.aluracursos.screenmatch.service.ConsumoAPI;
+import com.aluracursos.screenmatch.service.ConvierteDatos;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
@@ -12,7 +23,8 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		SpringApplication.run(ScreenmatchApplication.class, args);
 	}
 
-	@Override public void run(String... args) throws Exception {
-		System.out.println("Holam, mundo, desde Sprint");
+	@Override public void run(String... args) throws JsonProcessingException {
+		// new Principal().mostrarMenu();
+		new EjemploStreams().muestraEjemplo();
 	}
 }
