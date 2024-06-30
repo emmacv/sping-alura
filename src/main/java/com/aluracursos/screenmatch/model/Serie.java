@@ -1,9 +1,7 @@
 package com.aluracursos.screenmatch.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -12,46 +10,58 @@ import java.util.OptionalDouble;
 public class Serie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(unique = true, name = "title")
+    private Long Id;
+    @Column(unique = true)
     private String titulo;
     private Integer totalTemporadas;
     private Double evaluacion;
     private String poster;
-    private String sinopsis;
     @Enumerated(EnumType.STRING)
     private Categoria genero;
     private String actores;
-    @Transient
+    private String sinopsis;
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios;
 
-    public Serie(DatosSerie datosSerie) {
+    public Serie(){}
+
+    public Serie(DatosSerie datosSerie){
         this.titulo = datosSerie.titulo();
         this.totalTemporadas = datosSerie.totalTemporadas();
-        this.evaluacion = OptionalDouble
-                .of(Double.parseDouble(datosSerie.evaluacion()))
-                .orElse(0);
+        this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion())).orElse(0);
         this.poster = datosSerie.poster();
-        this.genero = Categoria.fromString(datosSerie.genero().split(",")[0]);
+        this.genero = Categoria.fromString(datosSerie.genero().split(",")[0].trim());
         this.actores = datosSerie.actores();
         this.sinopsis = datosSerie.sinopsis();
     }
 
-    public Serie() {
-
-    }
-
     @Override
     public String toString() {
-        return "Serie {" +
+        return  "genero=" + genero +
                 "titulo='" + titulo + '\'' +
                 ", totalTemporadas=" + totalTemporadas +
                 ", evaluacion=" + evaluacion +
                 ", poster='" + poster + '\'' +
-                ", sinopsis='" + sinopsis + '\'' +
-                ", genero=" + genero +
                 ", actores='" + actores + '\'' +
-                '}';
+                ", sinopsis='" + sinopsis + '\'' +
+                ", episodios='" + episodios + '\'';
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 
     public String getTitulo() {
@@ -86,14 +96,6 @@ public class Serie {
         this.poster = poster;
     }
 
-    public String getSinopsis() {
-        return sinopsis;
-    }
-
-    public void setSinopsis(String sinopsis) {
-        this.sinopsis = sinopsis;
-    }
-
     public Categoria getGenero() {
         return genero;
     }
@@ -110,11 +112,11 @@ public class Serie {
         this.actores = actores;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getSinopsis() {
+        return sinopsis;
     }
 
-    public Long getId() {
-        return id;
+    public void setSinopsis(String sinopsis) {
+        this.sinopsis = sinopsis;
     }
 }
