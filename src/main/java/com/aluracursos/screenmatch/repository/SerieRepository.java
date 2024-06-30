@@ -1,4 +1,4 @@
-package com.aluracursos.screenmatch.reposotory;
+package com.aluracursos.screenmatch.repository;
 
 import com.aluracursos.screenmatch.model.Categoria;
 import com.aluracursos.screenmatch.model.Episodio;
