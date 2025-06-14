@@ -24,9 +24,9 @@ public class Episodio {
     }
 
     public Episodio(Integer numero, DatosEpisodio e) {
-        this.numeroEpisodio = e.numeroEpisodio();
         this.titulo = e.titulo();
-        this.numeroEpisodio = numero;
+        this.numeroEpisodio = e.numeroEpisodio();
+        this.temporada = numero;
 
         try {
             this.evaluacion = Double.valueOf(e.evaluacion());

@@ -301,8 +301,7 @@ import java.util.stream.Collectors;
 public class Principal {
     private Scanner teclado = new Scanner(System.in);
     private ConsumoAPI consumoApi = new ConsumoAPI();
-    private final String URL_BASE = "https://www.omdbapi.com/?t=";
-    private final String API_KEY = "TU-APIKEY-OMDB";
+    private final String URL_BASE = "https://www.omdbapi.com/?apikey=d5bee84b&type=series&t=";
     private ConvierteDatos conversor = new ConvierteDatos();
     private List<DatosSerie> datosSeries = new ArrayList<>();
     private SerieRepository repositorio;
@@ -374,9 +373,11 @@ public class Principal {
     private DatosSerie getDatosSerie() throws JsonProcessingException {
         System.out.println("Escribe el nombre de la serie que deseas buscar");
         var nombreSerie = teclado.nextLine();
-        var json = consumoApi.obtenerDatos(URL_BASE + nombreSerie.replace(" ", "+") + API_KEY);
+        var json = consumoApi.obtenerDatos(URL_BASE + nombreSerie.replace(" ", "+"));
         System.out.println(json);
         DatosSerie datos = conversor.obtenerDatos(json, DatosSerie.class);
+
+        System.out.println(datos);
         return datos;
     }
     private void buscarEpisodioPorSerie() throws JsonProcessingException {
@@ -393,7 +394,7 @@ public class Principal {
             List<DatosTemporada> temporadas = new ArrayList<>();
 
             for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
-                var json = consumoApi.obtenerDatos(URL_BASE + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
+                var json = consumoApi.obtenerDatos(URL_BASE + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i);
                 DatosTemporada datosTemporada = conversor.obtenerDatos(json, DatosTemporada.class);
                 temporadas.add(datosTemporada);
             }
